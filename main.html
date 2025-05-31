@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Julio Cortázar: Continuidad de los Parques</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: #ecf0f1;
+            overflow: hidden;
+        }
+        
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .slide {
+            display: none;
+            width: 90%;
+            max-width: 1000px;
+            padding: 60px;
+            text-align: center;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .slide.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .slide h1 {
+            font-size: 3.5em;
+            margin-bottom: 30px;
+            color: #e74c3c;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-weight: bold;
+        }
+        
+        .slide h2 {
+            font-size: 2.8em;
+            margin-bottom: 40px;
+            color: #3498db;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        .slide h3 {
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            color: #e67e22;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .slide p {
+            font-size: 1.4em;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            text-align: left;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .slide-number {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            font-size: 1.2em;
+            color: #bdc3c7;
+        }
+        
+        .controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            background: rgba(52, 152, 219, 0.8);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .btn:hover {
+            background: rgba(52, 152, 219, 1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+        
+        .btn:disabled {
+            background: rgba(127, 140, 141, 0.5);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .agenda-item {
+            background: rgba(0,0,0,0.2);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border-left: 4px solid #e74c3c;
+            text-align: left;
+        }
+        
+        .highlight-box {
+            background: rgba(231, 76, 60, 0.1);
+            border: 2px solid #e74c3c;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 25px 0;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .feature-card {
+            background: rgba(0,0,0,0.3);
+            padding: 25px;
+            border-radius: 15px;
+            border-top: 3px solid #3498db;
+        }
+        
+        .symbol-section {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .symbol-item {
+            background: rgba(0,0,0,0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px;
+            flex: 1;
+            min-width: 200px;
+            border-bottom: 3px solid #e67e22;
+        }
+        
+        .quote {
+            font-style: italic;
+            font-size: 1.6em;
+            color: #f39c12;
+            margin: 30px 0;
+            padding: 20px;
+            border-left: 4px solid #f39c12;
+            background: rgba(0,0,0,0.2);
+        }
+        
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: #e74c3c;
+            transition: width 0.3s ease;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <div class="slideshow-container">
+        <!-- Slide 1: Título -->
+        <div class="slide active">
+            <div class="slide-number">1 / 11</div>
+            <h1>Julio Cortázar</h1>
+            <div class="quote">"Continuidad de los Parques"</div>
+            <h3>Un Laberinto Literario entre Realidad y Ficción</h3>
+        </div>
+        
+        <!-- Slide 2: Agenda -->
+        <div class="slide">
+            <div class="slide-number">2 / 11</div>
+            <h2>Agenda</h2>
+            <div class="agenda-item">
+                <h3>1. Introducción: Un Laberinto Literario</h3>
+            </div>
+            <div class="agenda-item">
+                <h3>2. Movimientos Literarios y el Lugar de Cortázar</h3>
+            </div>
+            <div class="agenda-item">
+                <h3>3. Análisis Profundo: "Continuidad de los Parques"</h3>
+            </div>
+            <div class="agenda-item">
+                <h3>4. Legado e Influencia</h3>
+            </div>
+            <div class="agenda-item">
+                <h3>5. Conclusión: El Impacto Duradero</h3>
+            </div>
+        </div>
+        
+        <!-- Slide 3: Introducción -->
+        <div class="slide">
+            <div class="slide-number">3 / 11</div>
+            <h2>Introducción: Un Laberinto Literario</h2>
+            <div class="highlight-box">
+                <h3>Una Obra Maestra de Metaficción</h3>
+                <p>El cuento de Julio Cortázar combina realidad y ficción, invitando a la participación activa del lector. Publicado en 1956, permanece como piedra angular de la literatura latinoamericana.</p>
+            </div>
+            <p><strong>Profundidad Temática:</strong> Explora la naturaleza de la lectura y la dinámica entre lector y texto, estableciéndose como un clásico moderno a pesar de su brevedad.</p>
+        </div>
+        
+        <!-- Slide 4: Julio Cortázar -->
+        <div class="slide">
+            <div class="slide-number">4 / 11</div>
+            <h2>Julio Cortázar: Un Pionero Literario</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>Vida Temprana</h3>
+                    <p>Nacido en Bélgica en 1914, su infancia expatriada moldeó sus temas de desplazamiento e identidad.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Avance Literario</h3>
+                    <p>Su carrera ganó impulso con "Bestiario" en 1951, especialmente con "Casa Tomada".</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Influencia Parisina</h3>
+                    <p>Vivir en París desde 1951 afectó profundamente su obra, enfocándose en temas latinoamericanos.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 5: Boom Latinoamericano -->
+        <div class="slide">
+            <div class="slide-number">5 / 11</div>
+            <h2>El Boom Latinoamericano</h2>
+            <div class="highlight-box">
+                <h3>Una Explosión Cultural</h3>
+                <p>Cortázar fue figura clave en el movimiento que experimentó con la forma y exploró universalmente temas latinoamericanos.</p>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>Surrealismo</h3>
+                    <p>Abrazó la irracionalidad, mezclando elementos ordinarios con extraordinarios.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Realismo Mágico</h3>
+                    <p>Integró elementos fantásticos en contextos cotidianos, difuminando la realidad.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 6: Estructura Narrativa -->
+        <div class="slide">
+            <div class="slide-number">6 / 11</div>
+            <h2>Estructura Narrativa y Mise en Abyme</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>División Estructural</h3>
+                    <p>Dividido en párrafos desiguales, transiciona de una lectura tranquila a acción intensa.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Narrativa Circular</h3>
+                    <p>Emplea mise en abyme, incrustando la novela dentro de la realidad del lector.</p>
+                </div>
+            </div>
+            <p><strong>Resultado:</strong> Esta estructura desafía la narrativa tradicional, difuminando las líneas entre ficción y realidad.</p>
+        </div>
+        
+        <!-- Slide 7: Metaficción -->
+        <div class="slide">
+            <div class="slide-number">7 / 11</div>
+            <h2>Metaficción y Transgresión Ontológica</h2>
+            <div class="highlight-box">
+                <p><strong>Consecuencias de la Lectura:</strong> El acto de leer tiene resultados reales y tangibles cuando los personajes ficticios penetran el mundo del lector.</p>
+            </div>
+            <p><strong>El Final:</strong> Colapsa mundos cuando el lector ve a su asesino a través de los ojos del asesino, desafiando completamente nuestra comprensión de verdad y fabricación.</p>
+        </div>
+        
+        <!-- Slide 8: Símbolos -->
+        <div class="slide">
+            <div class="slide-number">8 / 11</div>
+            <h2>Símbolos y Motivos Clave</h2>
+            <div class="symbol-section">
+                <div class="symbol-item">
+                    <h3>La Daga</h3>
+                    <p>Herramienta que trasciende mundos, culminando en un acto decisivo.</p>
+                </div>
+                <div class="symbol-item">
+                    <h3>El Parque</h3>
+                    <p>Representa capas de narrativa y conexiones entre realidades anidadas.</p>
+                </div>
+                <div class="symbol-item">
+                    <h3>Sillón Verde</h3>
+                    <p>Simboliza la continuidad entre el lector y el protagonista.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 9: El Papel del Lector -->
+        <div class="slide">
+            <div class="slide-number">9 / 11</div>
+            <h2>El Papel del Lector</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>Lector Pasivo a Víctima</h3>
+                    <p>El protagonista encarna al lector pasivo, cuya complacencia lo convierte en víctima.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Dinámicas de Colusión</h3>
+                    <p>Establece una asociación donde las soluciones imaginadas se materializan.</p>
+                </div>
+            </div>
+            <p><strong>Reflexión:</strong> Fuerza una reconsideración de la lectura y su intensa capacidad de involucrar emocional y sensorialmente.</p>
+        </div>
+        
+        <!-- Slide 10: Legado -->
+        <div class="slide">
+            <div class="slide-number">10 / 11</div>
+            <h2>Legado e Influencia</h2>
+            <div class="highlight-box">
+                <h3>Influencia en Gigantes Literarios</h3>
+                <p>Gabriel García Márquez reconoció el papel fundamental de Cortázar en el Boom. Paul Auster e Italo Calvino emplearon experimentos estructurales similares.</p>
+            </div>
+            <p><strong>Relevancia Duradera:</strong> Sus conceptos son perpetuamente debatidos, destacando la capacidad de la narrativa para contestar y expandir la literatura moderna.</p>
+        </div>
+        
+        <!-- Slide 11: Conclusión -->
+        <div class="slide">
+            <div class="slide-number">11 / 11</div>
+            <h2>Conclusión: El Impacto Duradero</h2>
+            <div class="highlight-box">
+                <h3>Redefiniendo Fronteras Narrativas</h3>
+                <p>La obra de Cortázar fusiona únicamente elementos estructurales y temáticos, impactando audiencias en múltiples niveles y continuando inspirando experimentación a través de diversos medios.</p>
+            </div>
+            <div class="quote">"Su influencia se extiende desde el cine hasta el examen crítico en campos variados, consolidándose como un verdadero ícono literario."</div>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <button class="btn" id="prevBtn" onclick="changeSlide(-1)">❮ Anterior</button>
+        <button class="btn" id="nextBtn" onclick="changeSlide(1)">Siguiente ❯</button>
+    </div>
+    
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            // Update progress bar
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            // Update button states
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+        
+        function changeSlide(direction) {
+            if (direction === 1 && currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            } else if (direction === -1 && currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+        
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
